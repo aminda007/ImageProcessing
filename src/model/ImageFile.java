@@ -39,17 +39,19 @@ public class ImageFile {
         imagePath = aImagePath;
     }
     public void originalImage(){
-        File input = new File(imagePath);
+
         try {
+            File input = new File(imagePath);
             image = ImageIO.read(input);
 //            File ouptut = new File("original.jpg");
 //            ImageIO.write(image, "jpg", ouptut);
             File current = new File("current.jpg");
             ImageIO.write(image, "jpg", current);
-        } catch (IOException ex) {
+            showImage();
+        } catch (IOException|NullPointerException ex) {
             Logger.getLogger(ImageFile.class.getName()).log(Level.SEVERE, null, ex);
         }
-        showImage();
+        
 
     }
     public void showImage(){
@@ -65,6 +67,7 @@ public class ImageFile {
             ImageProcessor.refCntrlPnel.showImage();
         } catch (Exception e) {
             // print it for sure
+            System.out.print(e);
         }
         ImageProcessor.refCntrlPnel.showImage();
         System.out.println("after");
