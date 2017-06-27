@@ -60,6 +60,12 @@ public class ImageFile {
 //        Image img =icon.getImage().getScaledInstance(100, 200, Image.SCALE_SMOOTH);
 //        ImageProcessor.refCntrlPnel.getImage().setIcon(icon);
 //        ImageProcessor.refCntrlPnel.getImage().setIcon(new ImageIcon("aaa.jpg"));
+        try {
+            // your stuff
+            ImageProcessor.refCntrlPnel.showImage();
+        } catch (Exception e) {
+            // print it for sure
+        }
         ImageProcessor.refCntrlPnel.showImage();
         System.out.println("after");
     }
