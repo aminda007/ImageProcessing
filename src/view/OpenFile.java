@@ -77,7 +77,7 @@ public class OpenFile extends javax.swing.JFrame {
             dispose();
         }
         ImageProcessor.refImgFile.originalImage();
-        
+        ImageProcessor.refImgFile.saveOriginal();
         
     }//GEN-LAST:event_myFileChooserActionPerformed
 
