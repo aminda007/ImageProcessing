@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JSlider;
 import model.ImageFile;
 
 /**
@@ -42,10 +43,11 @@ public class ControlPanel extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         refresh = new javax.swing.JButton();
         clear = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         image = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jSlider1 = new javax.swing.JSlider();
+        brightnessSlider = new javax.swing.JSlider();
         jSlider2 = new javax.swing.JSlider();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -87,6 +89,13 @@ public class ControlPanel extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("original");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -97,7 +106,9 @@ public class ControlPanel extends javax.swing.JFrame {
                         .addGap(20, 20, 20)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(refresh)
-                            .addComponent(jButton1)))
+                            .addComponent(jButton1))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addComponent(clear)))
@@ -107,7 +118,9 @@ public class ControlPanel extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jButton1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addGap(39, 39, 39)
                 .addComponent(refresh)
                 .addGap(18, 18, 18)
@@ -117,14 +130,19 @@ public class ControlPanel extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(image);
 
-        jSlider1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                jSlider1MouseDragged(evt);
+        brightnessSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                brightnessSliderStateChanged(evt);
             }
         });
-        jSlider1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+        brightnessSlider.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                brightnessSliderMouseDragged(evt);
+            }
+        });
+        brightnessSlider.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jSlider1PropertyChange(evt);
+                brightnessSliderPropertyChange(evt);
             }
         });
 
@@ -150,7 +168,7 @@ public class ControlPanel extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(brightnessSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -159,7 +177,7 @@ public class ControlPanel extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(brightnessSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addGap(20, 20, 20)
@@ -207,15 +225,13 @@ public class ControlPanel extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(62, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap(286, Short.MAX_VALUE))))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         pack();
@@ -247,20 +263,35 @@ public class ControlPanel extends javax.swing.JFrame {
 //        imgFrame.removeAll();
     }//GEN-LAST:event_clearActionPerformed
 
-    private void jSlider1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSlider1MouseDragged
+    private void brightnessSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_brightnessSliderMouseDragged
         // TODO add your handling code here:
 //        System.out.println("dragged to : ");
-    }//GEN-LAST:event_jSlider1MouseDragged
+    }//GEN-LAST:event_brightnessSliderMouseDragged
 
-    private void jSlider1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jSlider1PropertyChange
+    private void brightnessSliderPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_brightnessSliderPropertyChange
         // TODO add your handling code here:
-         System.out.println("dragged to : "+evt.getNewValue());
-    }//GEN-LAST:event_jSlider1PropertyChange
+//         System.out.println("dragged to : "+evt.getNewValue());
+    }//GEN-LAST:event_brightnessSliderPropertyChange
 
     private void refreshStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_refreshStateChanged
         // TODO add your handling code here:
         
     }//GEN-LAST:event_refreshStateChanged
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        ImageProcessor.refImgFile.originalImage();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void brightnessSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_brightnessSliderStateChanged
+        // TODO add your handling code here:
+//        System.out.println("state changed");
+        JSlider change = (JSlider) evt.getSource();
+        if(!change.getValueIsAdjusting()){
+            System.out.println(change.getValue()-50);
+            ImageProcessor.refImgFile.brightness(change.getValue()-50);
+        }
+    }//GEN-LAST:event_brightnessSliderStateChanged
     
     /**
      * @param args the command line arguments
@@ -298,9 +329,11 @@ public class ControlPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSlider brightnessSlider;
     private javax.swing.JButton clear;
     public javax.swing.JLabel image;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
@@ -310,7 +343,6 @@ public class ControlPanel extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSlider jSlider1;
     private javax.swing.JSlider jSlider2;
     private javax.swing.JMenuItem openImage;
     private javax.swing.JButton refresh;
@@ -334,16 +366,6 @@ public class ControlPanel extends javax.swing.JFrame {
     /**
      * @return the graph
      */
-    public javax.swing.JLabel getGraph() {
-        return graph;
-    }
-
-    /**
-     * @param graph the graph to set
-     */
-    public void setGraph(javax.swing.JLabel graph) {
-        this.graph = graph;
-    }
 
     public void setImage(BufferedImage image) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -354,7 +376,7 @@ public class ControlPanel extends javax.swing.JFrame {
             //        image.setVisible(false);
 //        image= new JLabel();
 
-this.image.setIcon(new ImageIcon(ImageIO.read(new File("current.jpg"))));
+            this.image.setIcon(new ImageIcon(ImageIO.read(new File("current.jpg"))));
         } catch (IOException ex) {
             Logger.getLogger(ControlPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -370,6 +392,7 @@ this.image.setIcon(new ImageIcon(ImageIO.read(new File("current.jpg"))));
 //        this.imgFrame.revalidate();
  //       this.imgFrame.repaint();
         this.image.updateUI();
+        System.out.println("image showed");
         
 //        imgFrame.getContentPane().add(image);
 //        imgFrame.getContentPane().add(image);
