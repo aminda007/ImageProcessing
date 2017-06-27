@@ -69,7 +69,7 @@ public class ImageFile {
             // print it for sure
             System.out.print(e);
         }
-        ImageProcessor.refCntrlPnel.showImage();
+        
         System.out.println("after");
     }
     
