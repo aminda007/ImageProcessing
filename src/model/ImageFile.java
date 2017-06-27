@@ -80,5 +80,33 @@ public class ImageFile {
          ImageIO.write(image, "jpg", ouptut);        
         } catch (Exception e) {}
         showImage();
-    }  
+    }
+    
+    public void brightness(int change){
+        try {
+         File input = new File("current.jpg");
+         image = ImageIO.read(input);
+         width = image.getWidth();
+         height = image.getHeight(); 
+         int red=255;
+         int green=255;
+         int blue=255;
+         for(int i=0; i<height; i++){        
+            for(int j=0; j<width; j++){            
+               Color c = new Color(image.getRGB(j, i));
+               red = (int)((255-c.getRed()) * (change/50) + c.getRed());
+               green = (int)( (255-c.getGreen()) * (change/50) + c.getGreen());
+               blue = (int)( (255-c.getBlue()) * (change/50) + c.getGreen());
+               
+               Color newColor = new Color(red,green,blue);              
+               image.setRGB(j,i,newColor.getRGB());
+            }
+         }  
+         System.out.println(red+" "+green+" "+blue);
+         File ouptut = new File("current.jpg");
+         ImageIO.write(image, "jpg", ouptut);        
+        } catch (Exception e) {}
+        showImage();
+    } 
+    
 }
