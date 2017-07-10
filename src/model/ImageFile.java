@@ -8,6 +8,7 @@ import controller.ImageProcessor;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -176,11 +177,10 @@ public class ImageFile {
         for(int i=0; i<height; i++){        
             for(int j=0; j<width; j++){            
                Color c = new Color(image.getRGB(j, i));
-                if (change<0){
                     
-                    red = (int)((c.getRed()) * (change/50.0) + c.getRed());
-                    green = (int)( (c.getGreen()) * (change/50.0) + c.getGreen());
-                    blue = (int)( (c.getBlue()) * (change/50.0) + c.getGreen());
+                    red = (int)((c.getRed()-128) * factor + 128);
+                    green = (int)( (c.getGreen()-128) * factor+ 128);
+                    blue = (int)( (c.getBlue()-128) * factor + 128);
                    
                     if(red<0){
                         red=0;
@@ -191,14 +191,7 @@ public class ImageFile {
                     if(blue<0){
                         blue=0;
                     }
-                    
-                }
-                else if (change>0){
-                    
-                    red = (int)((255-c.getRed()) * (change/50.0) + c.getRed());
-                    green = (int)( (255-c.getGreen()) * (change/50.0) + c.getGreen());
-                    blue = (int)( (255-c.getBlue()) * (change/50.0) + c.getGreen());
-                   
+                                      
                     if(red>255){
                         red=255;
                     }              
@@ -207,12 +200,7 @@ public class ImageFile {
                     }           
                     if(blue>255){
                         blue=255;
-                    }
-                    
-                }else{
-                    red = (int)((c.getRed()));
-                    green = (int)( (c.getGreen()));
-                    blue = (int)( (c.getBlue()));
+
                 }
                
                 Color newColor = new Color(red,green,blue);              
@@ -220,9 +208,9 @@ public class ImageFile {
             }
         }  
         if(change<0){
-            System.out.println("brgtness decrese");
+            System.out.println("contrast decrese");
         }else if(change>0){
-            System.out.println("brgtness increse");
+            System.out.println("contrast increse");
         }
         System.out.println("loop is over");
         File ouptut = new File("current.jpg");
@@ -230,6 +218,60 @@ public class ImageFile {
         showImage();
         } catch (Exception e) {
             System.out.println(e+ "exception ocurred" +" "+red+" "+green+" "+blue);
+        }
+        
+    }
+    public void medianFilter(){
+        int i=1;
+        int j=1;
+        try {
+        File input = new File("original.jpg");
+        image = ImageIO.read(input);
+        width = image.getWidth();
+        height = image.getHeight(); 
+        Color[] pixel=new Color[9];
+        int[] R=new int[9];
+        int[] B=new int[9];
+        int[] G=new int[9];
+        
+        for(i=2; i<height-3; i++){        
+            for(j=2; j<width-3; j++){            
+//               Color c = new Color(image.getRGB(j, i));
+                System.out.println(" "+i+" "+j);
+                System.out.println("up");
+                pixel[0]=new Color(image.getRGB(i-1,j-1));
+                System.out.println("down1");
+                pixel[1]=new Color(image.getRGB(i-1,j));
+                System.out.println("down2");
+                pixel[2]=new Color(image.getRGB(i-1,j+1));
+                System.out.println("down3");
+                pixel[3]=new Color(image.getRGB(i,j+1));
+                System.out.println("middle");
+                pixel[4]=new Color(image.getRGB(i+1,j+1));
+                pixel[5]=new Color(image.getRGB(i+1,j));
+                pixel[6]=new Color(image.getRGB(i+1,j-1));
+                pixel[7]=new Color(image.getRGB(i,j-1));
+                pixel[8]=new Color(image.getRGB(i,j));
+                for(int k=0;k<9;k++){
+//                    System.out.println(k);
+                    R[k]=pixel[k].getRed();
+                    B[k]=pixel[k].getBlue();
+                    G[k]=pixel[k].getGreen();
+
+                }
+                Arrays.sort(R);
+                Arrays.sort(G);
+                Arrays.sort(B);
+                Color newColor = new Color(R[4],B[4],G[4]);              
+                image.setRGB(j,i,newColor.getRGB());
+            }
+        }  
+        System.out.println("loop is over");
+        File ouptut = new File("current.jpg");
+        ImageIO.write(image, "jpg", ouptut);    
+        showImage();
+        } catch (Exception e) {
+            System.out.println(e+ "exception ocurred" +" "+i+" "+j+" ");
         }
         
     }
