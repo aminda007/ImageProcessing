@@ -35,7 +35,7 @@ public class OpenFile extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Open Image File");
 
-        myFileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\aminda\\Desktop\\nteam\\n-set"));
+        myFileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\aminda\\Documents\\NetBeansProjects\\ImageProcessor"));
         myFileChooser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 myFileChooserActionPerformed(evt);
